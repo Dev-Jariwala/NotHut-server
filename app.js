@@ -7,18 +7,22 @@ const cors = require("cors");
 const userRoutes = require("./routes/user");
 const app = express();
 
+app.use(express.json());
 app.use(
   cors({
     origin: process.env.FRONTEND_URL, // Replace with the URL of your client application
     credentials: true, // Enable credentials (cookies) support
   })
 );
-app.use(express.json());
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: true,
+      sameSite: "None",
+    },
   })
 );
 app.use(passport.initialize());
